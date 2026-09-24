@@ -9,11 +9,11 @@ export function getSortedPostsData() { // export function that returns all posts
   return allPostsData.sort((a, b) => { // sort the posts array
     if (a.date < b.date) { // if post a is older than post b
       return 1; // push a down the list
-    } else { // otherwise
+    } else { 
       return -1; // push a up the list
-    } // close the if/else
-  }); // close the sort callback and return
-} // close the getSortedPostsData function
+    } 
+  }); 
+}
 
 export function getAllPostIds() { // export function that returns all valid post ids as paths
   const fileContents = fs.readFileSync(postsFilePath, 'utf8'); // read the json file as a string
@@ -22,17 +22,14 @@ export function getAllPostIds() { // export function that returns all valid post
     return { // return an object for each post
       params: { // params key required by next.js
         id: post.id, // use the post's id as the url parameter
-      }, // close params
-    }; // close the return
-  }); // close the map
-} // close the getAllPostIds function
+      },
+    };
+  });
+}
 
 export async function getPostData(id) { // export async function that returns one post's data by id
   const fileContents = fs.readFileSync(postsFilePath, 'utf8'); // read the json file as a string
   const allPostsData = JSON.parse(fileContents); // parse the json string into a javascript array
   const post = allPostsData.find((p) => p.id === id); // find the post matching the given id
-  return { // return the post object merged with its id
-    id, // include the id
-    ...post, // spread the rest of the post properties
-  }; // close the return
-} // close the getPostData function
+  return Object.assign({ id: id }, post); // merge the id with the post properties into one object
+}
